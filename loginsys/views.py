@@ -1,13 +1,21 @@
 from django.shortcuts import render, render_to_response, redirect
 from django.contrib import auth
 from django.contrib.auth.forms import UserCreationForm
-from django.core.context_processors import csrf
+#from django.views.decorators import csrf
+from django.template.context_processors import csrf
 from django.contrib.auth.models import User
+from .models import UserProfile
+
 
 def users(request):
 	users = User.objects.all()
 	username = auth.get_user(request).username
 	return render_to_response('users.html', {'users': users, 'username': username})
+
+def user_profile(request, user_id):
+	username = auth.get_user(request).username
+	user_profile = UserProfile.objects.get(user_profile_id=user_id)
+	return render_to_response('user_profile_detail.html', {'user_profile':user_profile, 'username': username})
 
 
 def login(request):
